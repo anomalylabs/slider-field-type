@@ -13,40 +13,43 @@ return [
             ]
         ],
     ],
-    'min'           => [
-        'type'     => 'anomaly.field_type.text',
-        'required' => true,
-        'config'   => [
-            'default_value' => 1
-        ],
-        'rules'    => [
-            'numeric'
-        ]
-    ],
-    'max'           => [
-        'type'     => 'anomaly.field_type.text',
-        'required' => true,
-        'config'   => [
-            'default_value' => 10
-        ],
-        'rules'    => [
-            'numeric'
-        ]
-    ],
-    'step'          => [
-        'type'     => 'anomaly.field_type.text',
-        'required' => true,
-        'config'   => [
-            'default_value' => 1
-        ],
-        'rules'    => [
-            'numeric'
-        ]
-    ],
+	'min'           => [
+		'type'     => 'anomaly.field_type.integer',
+		'required' => true,
+		'config'   => [
+			'default_value' => 1,
+			'max' => null
+		]
+	],
+	'max'           => [
+		'type'     => 'anomaly.field_type.integer',
+		'required' => true,
+		'config'   => [
+			'default_value' => 10,
+			'max'  => null
+		]
+	],
+	'step'          => [
+		'type'     => 'anomaly.field_type.integer',
+		'required' => true,
+		'config'   => [
+			'default_value' => 1,
+			'max'  => null
+		]
+	],
+	'notnull' => [
+		'type' => 'anomaly.field_type.boolean',
+		'config' => [
+			'default_value' => false
+		]
+	],
     'default_value' => [
         'type' => 'anomaly.field_type.text'
     ],
     'unit' => [
         'type' => 'anomaly.field_type.text'
-    ]
+    ],
+	'onslide' => [
+		'type' => 'anomaly.field_type.editor'
+	]
 ];
