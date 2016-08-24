@@ -6,7 +6,6 @@ $(function () {
         var slider = $(this);
 
         var value = String(slider.data('value')).split(',');
-
         slider.slider({
             min: slider.data('min'),
             max: slider.data('max'),
@@ -22,15 +21,13 @@ $(function () {
 
         slider.addSliderSegments(slider.data('max'));
 
-        slider.on('slide', function (event, ui) {
-
-            if (ui.values == undefined) {
-                slider.prev('.value-label').find('.value').text(ui.value);
-                slider.find('input').val(ui.value);
-            } else {
-                slider.prev('.value-label').find('.value').text(String(ui.values).replace(',', '-'));
-                slider.find('input').val(ui.values);
-            }
+        slider.on('slide', function(event, ui) {
+            var result = window[slider.data('name') + "__onslide"](slider, event, ui);
+            if(!result) { event.preventDefault(); return false; }
         });
+
+        // execute the onslide function once to get everything synced up.
+        slider.trigger('slide');
+
     });
 });

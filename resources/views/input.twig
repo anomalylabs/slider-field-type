@@ -9,6 +9,7 @@
 
 <div
         class="slider"
+        data-name="{{ field_type.input_name }}"
         data-min="{{ field_type.config.min }}"
         data-max="{{ field_type.config.max }}"
         data-step="{{ field_type.config.step }}"
@@ -19,4 +20,69 @@
 
     <input type="hidden" name="{{ field_type.input_name }}" value="{{ field_type.value }}">
 
+    {% if field_type.config.onslide %}
+        <script type="text/javascript">
+            var {{ field_type.input_name }}__onslide = function(slider, event, ui) {
+
+                if (ui === undefined) {
+                    var curval = slider.find('input').val();
+                    var ui;
+                    if(curval.match(/^\d+,\s*\d+$/)) {
+                        var vals = curval.split(', ');
+                        var ui = {};
+                        ui.values = [$.trim(vals[0]), $.trim(vals[1])];
+                    } else if(curval.match(/^\d+$/)) {
+                        ui = { value: curval };
+                    } else {
+                        return false;
+                    }
+                }
+
+                {% if field_type.config.range and field_type.config.notnull %}
+                if(ui.values[0] == ui.values[1]) { return false; }
+                {% elseif field_type.config.notnull %}
+                if(ui.value == 0) { return false; }
+                {% endif %}
+
+                {{ field_type.config.onslide|raw }}
+
+                return true;
+            }
+        </script>
+    {% else %}
+        <script type="text/javascript">
+            var {{ field_type.input_name }}__onslide = function(slider, event, ui) {
+
+                if (ui === undefined) {
+                    var curval = slider.find('input').val();
+                    var ui;
+                    if(curval.match(/^\d+,\s*\d+$/)) {
+                        var vals = curval.split(', ');
+                        var ui = {};
+                        ui.values = [$.trim(vals[0]), $.trim(vals[1])];
+                    } else if(curval.match(/^\d+$/)) {
+                        ui = { value: curval };
+                    } else {
+                        return false;
+                    }
+                }
+
+                {% if field_type.config.range and field_type.config.notnull %}
+                if(ui.values[0] == ui.values[1]) { return false; }
+                {% elseif field_type.config.notnull %}
+                if(ui.value == 0) { return false; }
+                {% endif %}
+
+                if (ui.values === undefined) {
+                    slider.prev('.value-label').find('.value').text(ui.value);
+                    slider.find('input').val(ui.value);
+                } else {
+                    slider.prev('.value-label').find('.value').text(String(ui.values).replace(',', '-'));
+                    slider.find('input').val(ui.values);
+                }
+
+                return true;
+            };
+        </script>
+    {% endif %}
 </div>
